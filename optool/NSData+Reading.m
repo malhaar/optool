@@ -53,8 +53,10 @@ static char OFFSET;
 
 - (uint8_t)byteAtOffset:(NSUInteger)offset
 {
-    uint8_t result;
-    [self getBytes:&result range:NSMakeRange(offset, sizeof(result))];
+    uint8_t result = 0;
+    if (offset + sizeof(result) <= self.length) {
+        [self getBytes:&result range:NSMakeRange(offset, sizeof(result))];
+    }
     return result;
 }
 
@@ -67,8 +69,10 @@ static char OFFSET;
 
 - (uint16_t)shortAtOffset:(NSUInteger)offset
 {
-    uint16_t result;
-    [self getBytes:&result range:NSMakeRange(offset, sizeof(result))];
+    uint16_t result = 0;
+    if (offset + sizeof(result) <= self.length) {
+        [self getBytes:&result range:NSMakeRange(offset, sizeof(result))];
+    }
     return result;
 }
 
@@ -81,8 +85,10 @@ static char OFFSET;
 
 - (uint32_t)intAtOffset:(NSUInteger)offset
 {
-    uint32_t result;
-    [self getBytes:&result range:NSMakeRange(offset, sizeof(result))];
+    uint32_t result = 0;
+    if (offset + sizeof(result) <= self.length) {
+        [self getBytes:&result range:NSMakeRange(offset, sizeof(result))];
+    }
     return result;
 }
 
@@ -93,10 +99,12 @@ static char OFFSET;
     return nextLong;
 }
 
-- (uint64_t)longAtOffset:(NSUInteger)offset;
+- (uint64_t)longAtOffset:(NSUInteger)offset
 {
-    uint64_t result;
-    [self getBytes:&result range:NSMakeRange(offset, sizeof(result))];
+    uint64_t result = 0;
+    if (offset + sizeof(result) <= self.length) {
+        [self getBytes:&result range:NSMakeRange(offset, sizeof(result))];
+    }
     return result;
 }
 
@@ -121,7 +129,7 @@ static char OFFSET;
     [self appendBytes:&swap length:sizeof(swap)];
 }
 
-- (void)appendLong:(uint64_t)value;
+- (void)appendLong:(uint64_t)value
 {
     uint64_t swap = CFSwapInt64HostToLittle(value);
     [self appendBytes:&swap length:sizeof(swap)];

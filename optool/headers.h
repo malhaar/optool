@@ -29,4 +29,7 @@
 #import "defines.h"
 
 struct thin_header headerAtOffset(NSData *binary, uint32_t offset);
-struct thin_header *headersFromBinary(struct thin_header *headers, NSData *binary, uint32_t *amount);
+
+// Returns a malloc'd array of thin_header structs. Caller must free().
+// Sets *amount to the number of headers found.
+struct thin_header *headersFromBinary(NSData *binary, uint32_t *amount);

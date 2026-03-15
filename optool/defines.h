@@ -47,6 +47,16 @@
     c; \
 })
 
+#ifndef LC_DYLD_CHAINED_FIXUPS
+#define LC_DYLD_CHAINED_FIXUPS (0x80000034)
+#endif
+#ifndef LC_DYLD_EXPORTS_TRIE
+#define LC_DYLD_EXPORTS_TRIE (0x80000033)
+#endif
+#ifndef LC_BUILD_VERSION
+#define LC_BUILD_VERSION (0x32)
+#endif
+
 #define LC(LOADCOMMAND) ({ \
     const char *c = ""; \
     if (LOADCOMMAND == LC_REEXPORT_DYLIB) \
@@ -57,11 +67,31 @@
         c = "LC_LOAD_UPWARD_DYLIB";\
     else if (LOADCOMMAND == LC_LOAD_DYLIB) \
         c = "LC_LOAD_DYLIB";\
+    else if (LOADCOMMAND == LC_ID_DYLIB) \
+        c = "LC_ID_DYLIB";\
+    else if (LOADCOMMAND == LC_CODE_SIGNATURE) \
+        c = "LC_CODE_SIGNATURE";\
+    else if (LOADCOMMAND == LC_DYLD_INFO) \
+        c = "LC_DYLD_INFO";\
+    else if (LOADCOMMAND == LC_DYLD_INFO_ONLY) \
+        c = "LC_DYLD_INFO_ONLY";\
+    else if (LOADCOMMAND == LC_DYLD_CHAINED_FIXUPS) \
+        c = "LC_DYLD_CHAINED_FIXUPS";\
+    else if (LOADCOMMAND == LC_DYLD_EXPORTS_TRIE) \
+        c = "LC_DYLD_EXPORTS_TRIE";\
+    else if (LOADCOMMAND == LC_BUILD_VERSION) \
+        c = "LC_BUILD_VERSION";\
+    else if (LOADCOMMAND == LC_SEGMENT) \
+        c = "LC_SEGMENT";\
+    else if (LOADCOMMAND == LC_SEGMENT_64) \
+        c = "LC_SEGMENT_64";\
+    else if (LOADCOMMAND == LC_RPATH) \
+        c = "LC_RPATH";\
     c;\
 })
 
 #define COMMAND(str) ({ \
-    uint32_t cmd = -1; \
+    uint32_t cmd = (uint32_t)-1; \
     if ([str isEqualToString: @"reexport"]) \
         cmd = LC_REEXPORT_DYLIB; \
     else if ([str isEqualToString: @"weak"]) \
